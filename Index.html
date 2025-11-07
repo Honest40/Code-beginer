@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeQuest: Beginner to Pro</title>
+  <style>
+    body {font-family: Poppins, sans-serif; background: #0d1117; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center;}
+    .game-box {background: #161b22; border-radius: 20px; padding: 30px; width: 90%; max-width: 400px; box-shadow: 0 0 20px rgba(0,255,127,0.3);}
+    button {background: #00ff7f; color: #000; border: none; padding: 10px 20px; margin: 10px; border-radius: 10px; cursor: pointer; font-weight: bold;}
+    button:hover {background: #00cc66;}
+    input {padding: 10px; border-radius: 8px; border: none; margin-top: 10px; width: 80%;}
+    h2 {color: #00ff7f;}
+    #output {margin-top: 15px; background: #0b0f13; padding: 10px; border-radius: 8px; min-height: 40px;}
+  </style>
+</head>
+<body>
+  <div class="game-box">
+    <h1>💻 CodeQuest: Beginner to Pro</h1>
+    <h2 id="levelTitle">Level 1: Hello World</h2>
+    <p id="instructions">Click Run Code to display your first line of code!</p><div id="codeArea">
+  <code>console.log("Hello, World!");</code>
+</div>
+
+<input id="userInput" type="text" placeholder="Type here..." style="display:none;">
+
+<button onclick="runLevel()">▶ Run Code</button>
+<button onclick="nextLevel()">➡ Next Level</button>
+
+<div id="output"></div>
+
+  </div>  <script>
+    let level = 1;
+
+    function runLevel(){
+      const output = document.getElementById('output');
+      const input = document.getElementById('userInput').value;
+      if(level === 1){
+        output.innerText = 'Hello, World!';
+      } else if(level === 2){
+        if(input.trim() === ''){
+          output.innerText = 'Please enter your name!';
+        } else {
+          output.innerText = `Hello, ${input}! Welcome to coding!`;
+        }
+      } else if(level === 3){
+        const randomNum = Math.floor(Math.random() * 5) + 1;
+        if(Number(input) === randomNum){
+          output.innerText = `🎉 Correct! The number was ${randomNum}`;
+        } else {
+          output.innerText = `❌ Try again! The number was ${randomNum}`;
+        }
+      }
+    }
+
+    function nextLevel(){
+      const title = document.getElementById('levelTitle');
+      const instructions = document.getElementById('instructions');
+      const codeArea = document.getElementById('codeArea');
+      const input = document.getElementById('userInput');
+      const output = document.getElementById('output');
+      output.innerText = '';
+
+      level++;
+      if(level === 2){
+        title.innerText = 'Level 2: Variables';
+        instructions.innerText = 'Type your name below and run the code!';
+        codeArea.innerHTML = '<code>let name = prompt("Enter your name");\nconsole.log("Hello, " + name);</code>';
+        input.style.display = 'block';
+        input.value = '';
+      } else if(level === 3){
+        title.innerText = 'Level 3: Logic';
+        instructions.innerText = 'Guess a number between 1 and 5!';
+        codeArea.innerHTML = '<code>let num = Math.random();\nif (guess === num) { console.log("Correct!"); }</code>';
+        input.type = 'number';
+        input.value = '';
+      } else {
+        title.innerText = '🏁 You are now a Pro!';
+        instructions.innerText = 'Great job! You completed all levels!';
+        codeArea.innerHTML = '<code>Keep practicing and build your own projects!</code>';
+        input.style.display = 'none';
+      }
+    }
+  </script></body>
+</html>
