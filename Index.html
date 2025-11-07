@@ -1,84 +1,122 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CodeQuest: Beginner to Pro</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CodeQuest: Beginner to Pro — Fixed</title>
   <style>
-    body {font-family: Poppins, sans-serif; background: #0d1117; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center;}
-    .game-box {background: #161b22; border-radius: 20px; padding: 30px; width: 90%; max-width: 400px; box-shadow: 0 0 20px rgba(0,255,127,0.3);}
-    button {background: #00ff7f; color: #000; border: none; padding: 10px 20px; margin: 10px; border-radius: 10px; cursor: pointer; font-weight: bold;}
-    button:hover {background: #00cc66;}
-    input {padding: 10px; border-radius: 8px; border: none; margin-top: 10px; width: 80%;}
-    h2 {color: #00ff7f;}
-    #output {margin-top: 15px; background: #0b0f13; padding: 10px; border-radius: 8px; min-height: 40px;}
+    :root{--bg:#0d1117;--panel:#161b22;--accent:#00ff7f;--muted:#98a0b3}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;background:linear-gradient(180deg,#071017,#041017);font-family:Inter,system-ui,Arial;color:#e6fff0;display:flex;align-items:center;justify-content:center;padding:20px}
+    .card{width:100%;max-width:420px;background:var(--panel);border-radius:14px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03)}
+    h1{margin:0 0 6px;font-size:20px;color:var(--accent)}
+    h2{margin:6px 0 12px;font-size:15px}
+    p{margin:6px 0;color:var(--muted)}
+    .codeBox{background:#071216;padding:12px;border-radius:8px;text-align:left;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Courier New', monospace;font-size:13px;color:#bfeadf}
+    input, button{font-size:15px}
+    input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:#081218;color:#eafff0;margin-top:10px}
+    .row{display:flex;gap:8px;margin-top:12px}
+    button{flex:1;padding:10px;border-radius:8px;border:none;background:var(--accent);color:#052017;font-weight:700;cursor:pointer}
+    button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:600}
+    #output{margin-top:12px;min-height:44px;padding:10px;border-radius:8px;background:#041116;border:1px solid rgba(255,255,255,0.02);color:#dfffee}
+    .small{font-size:13px;color:var(--muted)}
   </style>
 </head>
 <body>
-  <div class="game-box">
-    <h1>💻 CodeQuest: Beginner to Pro</h1>
+  <div class="card">
+    <h1>CodeQuest: Beginner → Pro</h1>
     <h2 id="levelTitle">Level 1: Hello World</h2>
-    <p id="instructions">Click Run Code to display your first line of code!</p><div id="codeArea">
-  <code>console.log("Hello, World!");</code>
+    <p id="hint" class="small">Press <strong>Run</strong> to execute the current level. Use <strong>Next</strong> to move forward.</p><div class="codeBox" id="codeBox">console.log("Hello, World!");</div>
+
+<input id="userInput" placeholder="(input will appear for level 2 & 3)" style="display:none;" />
+
+<div class="row">
+  <button id="runBtn">Run</button>
+  <button class="secondary" id="nextBtn">Next</button>
 </div>
 
-<input id="userInput" type="text" placeholder="Type here..." style="display:none;">
-
-<button onclick="runLevel()">▶ Run Code</button>
-<button onclick="nextLevel()">➡ Next Level</button>
-
 <div id="output"></div>
+<p class="small" style="margin-top:10px">Works offline — open this file in any modern browser (Chrome, Firefox, Edge, Safari).</p>
 
-  </div>  <script>
-    let level = 1;
+  </div><script>
+// Simple, robust Level flow with clear logic and validation
+let level = 1;
+const codeBox = document.getElementById('codeBox');
+const levelTitle = document.getElementById('levelTitle');
+const hint = document.getElementById('hint');
+const userInput = document.getElementById('userInput');
+const output = document.getElementById('output');
+const runBtn = document.getElementById('runBtn');
+const nextBtn = document.getElementById('nextBtn');
 
-    function runLevel(){
-      const output = document.getElementById('output');
-      const input = document.getElementById('userInput').value;
-      if(level === 1){
-        output.innerText = 'Hello, World!';
-      } else if(level === 2){
-        if(input.trim() === ''){
-          output.innerText = 'Please enter your name!';
-        } else {
-          output.innerText = `Hello, ${input}! Welcome to coding!`;
-        }
-      } else if(level === 3){
-        const randomNum = Math.floor(Math.random() * 5) + 1;
-        if(Number(input) === randomNum){
-          output.innerText = `🎉 Correct! The number was ${randomNum}`;
-        } else {
-          output.innerText = `❌ Try again! The number was ${randomNum}`;
-        }
-      }
-    }
+function setLevel(n){
+  level = n;
+  output.innerText = '';
+  userInput.value = '';
+  userInput.type = 'text';
+  userInput.style.display = 'none';
+  if(level === 1){
+    levelTitle.innerText = 'Level 1: Hello World';
+    codeBox.textContent = 'console.log("Hello, World!");';
+    hint.innerText = 'Press Run to display "Hello, World!"';
+  } else if(level === 2){
+    levelTitle.innerText = 'Level 2: Variables';
+    codeBox.textContent = 'let name = "YourName";
+console.log("Hello, " + name + "!");';
+    hint.innerText = 'Type your name in the input, then Run.';
+    userInput.style.display = 'block';
+    userInput.placeholder = 'Type your name here';
+  } else if(level === 3){
+    levelTitle.innerText = 'Level 3: Logic (Guess the Number)';
+    codeBox.textContent = '// Guess a number from 1 to 5
+let guess = Number(prompt("Enter a number"));
+if (guess === secret) console.log("Correct!"); else console.log("Try again");';
+    hint.innerText = 'Enter a number 1–5 and Run. Good luck!';
+    userInput.style.display = 'block';
+    userInput.placeholder = 'Enter a number 1 to 5';
+    userInput.type = 'number';
+  } else {
+    levelTitle.innerText = '🏁 You reached Pro';
+    codeBox.textContent = 'Congratulations! Keep practicing: build small projects daily.';
+    hint.innerText = 'Refresh the page to replay or click Reset.';
+    userInput.style.display = 'none';
+  }
+}
 
-    function nextLevel(){
-      const title = document.getElementById('levelTitle');
-      const instructions = document.getElementById('instructions');
-      const codeArea = document.getElementById('codeArea');
-      const input = document.getElementById('userInput');
-      const output = document.getElementById('output');
-      output.innerText = '';
+// helper to print to output (acts like console.log for learner)
+function writeOutput(text){
+  output.innerText = text;
+}
 
-      level++;
-      if(level === 2){
-        title.innerText = 'Level 2: Variables';
-        instructions.innerText = 'Type your name below and run the code!';
-        codeArea.innerHTML = '<code>let name = prompt("Enter your name");\nconsole.log("Hello, " + name);</code>';
-        input.style.display = 'block';
-        input.value = '';
-      } else if(level === 3){
-        title.innerText = 'Level 3: Logic';
-        instructions.innerText = 'Guess a number between 1 and 5!';
-        codeArea.innerHTML = '<code>let num = Math.random();\nif (guess === num) { console.log("Correct!"); }</code>';
-        input.type = 'number';
-        input.value = '';
-      } else {
-        title.innerText = '🏁 You are now a Pro!';
-        instructions.innerText = 'Great job! You completed all levels!';
-        codeArea.innerHTML = '<code>Keep practicing and build your own projects!</code>';
-        input.style.display = 'none';
-      }
-    }
-  </script></body>
+// run current level
+runBtn.addEventListener('click', ()=>{
+  writeOutput('');
+  const val = userInput.value.trim();
+  if(level === 1){
+    writeOutput('Hello, World!');
+  } else if(level === 2){
+    if(!val){ writeOutput('❌ Please enter your name in the input.'); return; }
+    // sanitize simple input
+    const name = val.replace(/[^a-zA-Z0-9 \-_.]/g, '');
+    writeOutput('✅ Hello, ' + name + '! Welcome to coding.');
+  } else if(level === 3){
+    if(!val){ writeOutput('❌ Enter a number between 1 and 5.'); return; }
+    const guess = Number(val);
+    if(!Number.isInteger(guess) || guess < 1 || guess > 5){ writeOutput('❌ Please enter an integer from 1 to 5.'); return; }
+    const secret = Math.floor(Math.random() * 5) + 1; // 1..5
+    if(guess === secret){ writeOutput('🎉 Correct! The number was ' + secret + '.'); }
+    else { writeOutput('❌ Not quite — your guess: ' + guess + '. The number was ' + secret + '. Try again!'); }
+  } else {
+    writeOutput('You finished the tutorial. Refresh to play again.');
+  }
+});
+
+// next level (cycles until 4 which is Pro)
+nextBtn.addEventListener('click', ()=>{
+  if(level < 4) setLevel(level + 1);
+  else setLevel(1);
+});
+
+// initialize
+setLevel(1);
+</script></body>
 </html>
